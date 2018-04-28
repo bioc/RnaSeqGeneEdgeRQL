@@ -782,7 +782,7 @@ The boxplot function provides a compact way to view the quality scores by positi
     boxplot(QS, ylab="Quality score", xlab="Base position",
             main="SRR1552444.fastq", cex=0.25, col="orange")
 
-![Boxplots of quality scores by base position for the first FASTQ file.](QualityScores.png)
+![Boxplots of quality scores by base position for the first FASTQ file.](../extdata/QualityScores.png)
 
 The vertical axis shows the Phred quality score, equal to $-10\log_{10}(p)$ where $p$ is the probability of an erroneous call.
 The maximum possible value is 40, and all values above 10 correspond to extremely small error probabilities.
