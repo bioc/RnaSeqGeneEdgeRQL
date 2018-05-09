@@ -1,0 +1,10 @@
+citEntry(
+  entry = "article",
+  title = "From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline",
+  author = "Yunshun Chen and Aaron T L Lun and Gordon K Smyth",
+  journal = "F1000Research",
+  volume = "5",
+  pages = "1438",
+  year = "2016",
+  textVersion = "Chen Y, Lun ATL, and Smyth, GK (2016). From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline. F1000Research 5, 1438."
+)
