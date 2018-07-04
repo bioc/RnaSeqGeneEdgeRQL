@@ -493,27 +493,17 @@ o <- order(tr$table$PValue)
 logCPM <- logCPM[o[1:30],]
 ```
 
-Then we scale each row (each gene) to have mean zero and standard deviation one:
-
-```{r scale}
-logCPM <- t(scale(t(logCPM)))
-```
-This scaling is commonly done for heatmaps and ensures that the heatmap displays relative changes for each gene.
-A heat map can then be produced by the `heatmap.2` function in the *gplots* package:
+A heat map can then be produced by the `coolmap` function:
 ```{r heatmap, message=FALSE, fig.width=8, fig.height=12, fig.cap="Heat map across all the samples using the top 30 most DE genes between the basal lactating group and the basal pregnancy group."}
-library(gplots)
-col.pan <- colorpanel(100, "blue", "white", "red")
-heatmap.2(logCPM, col=col.pan, Rowv=TRUE, scale="none", 
-    trace="none", dendrogram="both", cexRow=1, cexCol=1.4, density.info="none",
-    margin=c(10,9), lhei=c(2,10), lwid=c(2,6))
+coolmap(logCPM, margins=c(7,7), lhei=c(1,6), lwid=c(1,3))
 ```
-By default, `heatmap.2` clusters genes and samples based on Euclidean distance between the expression values.
-Because we have pre-standardized the rows of the logCPM matrix, the Euclidean distance between each pair of genes is proportional to $(1-r)^2$, where $r$ is the Pearson correlation coefficient between the two genes.
-This shows that the heatmap will cluster together genes that have positively correlated logCPM values, because large positive correlations correspond to small distances.
-
-The positioning of the samples in the heatmap is dependent on how the genes in the display have been chosen.
-Here we are displaying those genes that are most DE between `B.lactating` and `B.pregnant`, so those two cell populations are well separated on the plot.
+By default, `coolmap` clusters genes by correlation (highly correlated genes are closest) and clusters samples based on Euclidean distance between the expression values.
+The coolmap has placed the basal samples on the right and the luminal samples on the left.
+In each case, the virgin and pregnant samples are more like each other than the lactacting samples.
 As expected, the two replicate samples from each group are clustered together.
+
+There a number of other R functions that can create heatmaps, but `coolmap` is the simplest because the default clustering metrics are chosen to be appropriate for expression data.
+
 
 Analysis of deviance {#analysis-of-deviance .unnumbered}
 --------------------
