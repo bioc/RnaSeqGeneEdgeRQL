@@ -19,7 +19,7 @@ output:
 ---
 **R version**: `r R.version.string`
 
-**Bioconductor version**: `r BiocInstaller::biocVersion()`
+**Bioconductor version**: `r BiocManager::version()`
 
 **Package**: `r packageVersion("RnaSeqGeneEdgeRQL")`
 
@@ -894,8 +894,8 @@ Data and software availability {#data-and-software-availability .unnumbered}
 
 This html document was generated as a vignette of the RnaSeqGeneEdgeRQL package, which can be installed by running 
 
-    source("http://www.bioconductor.org/biocLite")
-    biocLite("RnaSeqGeneEdgeRQL")
+    install.packages("BiocManager")
+    BiocManager::install("RnaSeqGeneEdgeRQL")
 
 at the R prompt.
 Except for the targets file `targets.txt`, all data analyzed in the workflow is read automatically from public websites as part of the code.
