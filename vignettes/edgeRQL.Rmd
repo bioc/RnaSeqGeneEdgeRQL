@@ -7,7 +7,7 @@ author:
     affiliation: Cancer Research UK Cambridge Institute, University of Cambridge, Li Ka Shing Centre, Robinson Way, CB20RE, Cambridge, United Kingdom
   - name: Gordon K. Smyth
     affiliation: The Walter and Eliza Hall Institute of Medical Research, 1G Royal Parade, Parkville, VIC 3052, Melbourne, Australia; School of Mathematics and Statistics, The University of Melbourne, Parkville, VIC 3010, Melbourne, Australia
-date: 12 May 2018
+date: 17 Oct 2018
 vignette: >
   %\VignetteIndexEntry{From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -675,14 +675,14 @@ Suppose visualization is performed for the gene set defined by the GO term GO:00
 ```{r barcode, fig.width=8, fig.height=5, fig.cap="Barcode plot showing enrichment of the GO term GO:0032465 in the basal virgin group compared to the basal lactating group. X-axis shows logFC for B.virgin vs B.lactating. Black bars represent genes annotated with the GO term. The worm shows relative enrichment."}
 res <- glmQLFTest(fit, contrast=B.VvsL)
 index <- rownames(fit) %in% cyt.go.genes[[1]]
-barcodeplot(res$table$logFC, index=index, labels=c("B.virgin","B.lactating"), 
+barcodeplot(res$table$logFC, index=index, labels=c("B.lactating","B.virgin"), 
             main=cyt.go[1])
 ```
 
-In the plot, all genes are ranked from left to right by decreasing log-fold change for the contrast and the genes within the gene set are represented by vertical bars, forming the barcode-like pattern.
+In the plot, all genes are ranked from left to right by increasing log-fold change for the contrast and the genes within the gene set are represented by vertical bars, forming the barcode-like pattern.
 The curve (or *worm*) above the barcode shows the relative local enrichment of the bars in each part of the plot.
 The dotted horizontal line indicates neutral enrichment; the worm above the dotted line shows enrichment while the worm below the dotted line shows depletion.
-In this particular barcode plot the worm shows enrichment on the left for positive logFCs, and depletion on the right for negative logFCs.
+In this particular barcode plot the worm shows enrichment on the right for positive logFCs, and depletion on the left for negative logFCs.
 The conclusion is that genes associated with this GO term tend to be up-regulated in the basal cells of virgin mice compared to lactating mice, confirming the result of the `fry` test above.
 
 Camera gene set enrichment analysis {#camera-gene-set-enrichment-analysis .unnumbered}
@@ -720,7 +720,7 @@ res <- glmQLFTest(fit, contrast=BvsL.v)
 barcodeplot(res$table$logFC,
             index=idx[["LIM_MAMMARY_STEM_CELL_UP"]],
             index2=idx[["LIM_MAMMARY_STEM_CELL_DN"]],
-            labels=c("B.virgin","L.virgin"),
+            labels=c("L.virgin","B.virgin"),
             main="LIM_MAMMARY_STEM_CELL",
             alpha=1)
 ```
