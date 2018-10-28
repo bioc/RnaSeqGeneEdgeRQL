@@ -7,7 +7,7 @@ author:
     affiliation: Cancer Research UK Cambridge Institute, University of Cambridge, Li Ka Shing Centre, Robinson Way, CB20RE, Cambridge, United Kingdom
   - name: Gordon K. Smyth
     affiliation: The Walter and Eliza Hall Institute of Medical Research, 1G Royal Parade, Parkville, VIC 3052, Melbourne, Australia; School of Mathematics and Statistics, The University of Melbourne, Parkville, VIC 3010, Melbourne, Australia
-date: 17 Oct 2018
+date: 28 Oct 2018
 vignette: >
   %\VignetteIndexEntry{From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -96,7 +96,7 @@ group <- factor(group)
 table(group)
 ```
 
-Note.
+**Note**.
 This study isolated carefully sorted cell populations obtained from genetically indentical mice under controlled laboratory conditions.
 As will be shown during the analysis below, the relatively small sample size ($n=2$ in each group) here is justified by the low background variability and by the fact that the expression profiles of the different groups are distinctly different.
 Studies with more variability (for example on human subjects) or with smaller effect sizes may well require more biological replicates for reliable results.
@@ -257,7 +257,7 @@ As a result, the effective library size will be scaled down for that sample.
 Here we see that the luminal-lactating samples have low normalization factors.
 This is a sign that these samples contain a number of very highly upregulated genes.
 
-Note.
+**Note**.
 In general, we find TMM normalization to be satisfactory for almost all well-designed mRNA gene expression experiments.
 Single-cell RNA-seq is an exception, for which specialized normalization methods are needed [@lun2016pooling].
 Another, less common, type of study requiring special treatment is that with global differential expression, with more than half of the genome differentially expressed between experimental conditions in the same direction [@wu2013mirna].
@@ -911,11 +911,6 @@ Author contributions {#author-contributions .unnumbered}
 All authors developed and tested the code workflow.
 All authors wrote the article.
 
-Competing interests {#competing-interests .unnumbered}
-===================
-
-No competing interests were disclosed.
-
 Grant information {#grant-information .unnumbered}
 =================
 
@@ -930,6 +925,13 @@ The authors thank Wei Shi and Yang Liao for advice with *Rsubread* and Yifang Hu
 We also wish to acknowledge the early developers of the quasi-likelihood testing approach.
 Davis McCarthy authored the first versions of the quasi-likelihood functions in *edgeR* in February 2011 and Steve Lund and Dan Nettleton worked independently on *QuasiSeq* around the same time.
 We thank Steve Lund and Dan Nettleton for a valuable and enjoyable collaboration that lead to Lund et al [@lund2012quasiseq].
+
+How to cite {#how-to-cite .unnumbered}
+====================
+
+Please cite this workflow article as
+
+Chen, Yunshun, A. T. L. Lun, and G. K. Smyth. 2016. "From Reads to Genes to Pathways: Differential Expression Analysis of RNA-Seq Experiments Using Rsubread and the edgeR Quasi-Likelihood Pipeline." *F1000Research* 5:1438.
 
 References {#references .unnumbered}
 ==========
