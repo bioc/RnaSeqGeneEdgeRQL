@@ -1,7 +1,7 @@
 Package: RnaSeqGeneEdgeRQL
 Title: Gene-level RNA-seq differential expression and pathway analysis using Rsubread and the edgeR quasi-likelihood pipeline 
-Version: 1.7.0
-Date: 2018-10-28
+Version: 1.7.1
+Date: 2018-12-03
 Author: Yunshun Chen, Aaron Lun, Gordon Smyth
 Maintainer: Yunshun Chen <yuchen@wehi.edu.au>
 Description: This workflow package provides, through its vignette, a complete
@@ -13,7 +13,7 @@ Description: This workflow package provides, through its vignette, a complete
 Depends: R (>= 3.3.0), edgeR, gplots, org.Mm.eg.db, GO.db
 License: Artistic-2.0
 VignetteBuilder: knitr
-biocViews: Workflow, GeneExpressionWorkflow
+biocViews: Workflow, GeneExpressionWorkflow, ImmunoOncologyWorkflow
 Suggests: knitr, knitcitations
 NeedsCompilation: no
 URL: http://f1000research.com/articles/5-1438
