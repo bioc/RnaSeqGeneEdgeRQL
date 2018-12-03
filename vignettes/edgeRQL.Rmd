@@ -7,7 +7,7 @@ author:
     affiliation: Cancer Research UK Cambridge Institute, University of Cambridge, Li Ka Shing Centre, Robinson Way, CB20RE, Cambridge, United Kingdom
   - name: Gordon K. Smyth
     affiliation: The Walter and Eliza Hall Institute of Medical Research, 1G Royal Parade, Parkville, VIC 3052, Melbourne, Australia; School of Mathematics and Statistics, The University of Melbourne, Parkville, VIC 3010, Melbourne, Australia
-date: 12 May 2018
+date: 28 Oct 2018
 vignette: >
   %\VignetteIndexEntry{From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,7 +19,7 @@ output:
 ---
 **R version**: `r R.version.string`
 
-**Bioconductor version**: `r BiocInstaller::biocVersion()`
+**Bioconductor version**: `r BiocManager::version()`
 
 **Package**: `r packageVersion("RnaSeqGeneEdgeRQL")`
 
@@ -96,7 +96,7 @@ group <- factor(group)
 table(group)
 ```
 
-Note.
+**Note**.
 This study isolated carefully sorted cell populations obtained from genetically indentical mice under controlled laboratory conditions.
 As will be shown during the analysis below, the relatively small sample size ($n=2$ in each group) here is justified by the low background variability and by the fact that the expression profiles of the different groups are distinctly different.
 Studies with more variability (for example on human subjects) or with smaller effect sizes may well require more biological replicates for reliable results.
@@ -257,7 +257,7 @@ As a result, the effective library size will be scaled down for that sample.
 Here we see that the luminal-lactating samples have low normalization factors.
 This is a sign that these samples contain a number of very highly upregulated genes.
 
-Note.
+**Note**.
 In general, we find TMM normalization to be satisfactory for almost all well-designed mRNA gene expression experiments.
 Single-cell RNA-seq is an exception, for which specialized normalization methods are needed [@lun2016pooling].
 Another, less common, type of study requiring special treatment is that with global differential expression, with more than half of the genome differentially expressed between experimental conditions in the same direction [@wu2013mirna].
@@ -493,27 +493,17 @@ o <- order(tr$table$PValue)
 logCPM <- logCPM[o[1:30],]
 ```
 
-Then we scale each row (each gene) to have mean zero and standard deviation one:
-
-```{r scale}
-logCPM <- t(scale(t(logCPM)))
-```
-This scaling is commonly done for heatmaps and ensures that the heatmap displays relative changes for each gene.
-A heat map can then be produced by the `heatmap.2` function in the *gplots* package:
+A heat map can then be produced by the `coolmap` function:
 ```{r heatmap, message=FALSE, fig.width=8, fig.height=12, fig.cap="Heat map across all the samples using the top 30 most DE genes between the basal lactating group and the basal pregnancy group."}
-library(gplots)
-col.pan <- colorpanel(100, "blue", "white", "red")
-heatmap.2(logCPM, col=col.pan, Rowv=TRUE, scale="none", 
-    trace="none", dendrogram="both", cexRow=1, cexCol=1.4, density.info="none",
-    margin=c(10,9), lhei=c(2,10), lwid=c(2,6))
+coolmap(logCPM, margins=c(7,7), lhei=c(1,6), lwid=c(1,3))
 ```
-By default, `heatmap.2` clusters genes and samples based on Euclidean distance between the expression values.
-Because we have pre-standardized the rows of the logCPM matrix, the Euclidean distance between each pair of genes is proportional to $(1-r)^2$, where $r$ is the Pearson correlation coefficient between the two genes.
-This shows that the heatmap will cluster together genes that have positively correlated logCPM values, because large positive correlations correspond to small distances.
-
-The positioning of the samples in the heatmap is dependent on how the genes in the display have been chosen.
-Here we are displaying those genes that are most DE between `B.lactating` and `B.pregnant`, so those two cell populations are well separated on the plot.
+By default, `coolmap` clusters genes by correlation (highly correlated genes are closest) and clusters samples based on Euclidean distance between the expression values.
+The coolmap has placed the basal samples on the right and the luminal samples on the left.
+In each case, the virgin and pregnant samples are more like each other than the lactacting samples.
 As expected, the two replicate samples from each group are clustered together.
+
+There a number of other R functions that can create heatmaps, but `coolmap` is the simplest because the default clustering metrics are chosen to be appropriate for expression data.
+
 
 Analysis of deviance {#analysis-of-deviance .unnumbered}
 --------------------
@@ -685,14 +675,14 @@ Suppose visualization is performed for the gene set defined by the GO term GO:00
 ```{r barcode, fig.width=8, fig.height=5, fig.cap="Barcode plot showing enrichment of the GO term GO:0032465 in the basal virgin group compared to the basal lactating group. X-axis shows logFC for B.virgin vs B.lactating. Black bars represent genes annotated with the GO term. The worm shows relative enrichment."}
 res <- glmQLFTest(fit, contrast=B.VvsL)
 index <- rownames(fit) %in% cyt.go.genes[[1]]
-barcodeplot(res$table$logFC, index=index, labels=c("B.virgin","B.lactating"), 
+barcodeplot(res$table$logFC, index=index, labels=c("B.lactating","B.virgin"), 
             main=cyt.go[1])
 ```
 
-In the plot, all genes are ranked from left to right by decreasing log-fold change for the contrast and the genes within the gene set are represented by vertical bars, forming the barcode-like pattern.
+In the plot, all genes are ranked from left to right by increasing log-fold change for the contrast and the genes within the gene set are represented by vertical bars, forming the barcode-like pattern.
 The curve (or *worm*) above the barcode shows the relative local enrichment of the bars in each part of the plot.
 The dotted horizontal line indicates neutral enrichment; the worm above the dotted line shows enrichment while the worm below the dotted line shows depletion.
-In this particular barcode plot the worm shows enrichment on the left for positive logFCs, and depletion on the right for negative logFCs.
+In this particular barcode plot the worm shows enrichment on the right for positive logFCs, and depletion on the left for negative logFCs.
 The conclusion is that genes associated with this GO term tend to be up-regulated in the basal cells of virgin mice compared to lactating mice, confirming the result of the `fry` test above.
 
 Camera gene set enrichment analysis {#camera-gene-set-enrichment-analysis .unnumbered}
@@ -730,7 +720,7 @@ res <- glmQLFTest(fit, contrast=BvsL.v)
 barcodeplot(res$table$logFC,
             index=idx[["LIM_MAMMARY_STEM_CELL_UP"]],
             index2=idx[["LIM_MAMMARY_STEM_CELL_DN"]],
-            labels=c("B.virgin","L.virgin"),
+            labels=c("L.virgin","B.virgin"),
             main="LIM_MAMMARY_STEM_CELL",
             alpha=1)
 ```
@@ -904,8 +894,8 @@ Data and software availability {#data-and-software-availability .unnumbered}
 
 This html document was generated as a vignette of the RnaSeqGeneEdgeRQL package, which can be installed by running 
 
-    source("http://www.bioconductor.org/biocLite")
-    biocLite("RnaSeqGeneEdgeRQL")
+    install.packages("BiocManager")
+    BiocManager::install("RnaSeqGeneEdgeRQL")
 
 at the R prompt.
 Except for the targets file `targets.txt`, all data analyzed in the workflow is read automatically from public websites as part of the code.
@@ -921,11 +911,6 @@ Author contributions {#author-contributions .unnumbered}
 All authors developed and tested the code workflow.
 All authors wrote the article.
 
-Competing interests {#competing-interests .unnumbered}
-===================
-
-No competing interests were disclosed.
-
 Grant information {#grant-information .unnumbered}
 =================
 
@@ -940,6 +925,13 @@ The authors thank Wei Shi and Yang Liao for advice with *Rsubread* and Yifang Hu
 We also wish to acknowledge the early developers of the quasi-likelihood testing approach.
 Davis McCarthy authored the first versions of the quasi-likelihood functions in *edgeR* in February 2011 and Steve Lund and Dan Nettleton worked independently on *QuasiSeq* around the same time.
 We thank Steve Lund and Dan Nettleton for a valuable and enjoyable collaboration that lead to Lund et al [@lund2012quasiseq].
+
+How to cite {#how-to-cite .unnumbered}
+====================
+
+Please cite this workflow article as
+
+Chen, Yunshun, A. T. L. Lun, and G. K. Smyth. 2016. "From Reads to Genes to Pathways: Differential Expression Analysis of RNA-Seq Experiments Using Rsubread and the edgeR Quasi-Likelihood Pipeline." *F1000Research* 5:1438.
 
 References {#references .unnumbered}
 ==========
