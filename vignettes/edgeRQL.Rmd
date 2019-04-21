@@ -61,6 +61,7 @@ The approach assumes that RNA samples have been extracted from cells of interest
 The *Rsubread* part of the workflow takes FASTQ files of raw sequence reads as input, while the *edgeR* part of the pipeline takes a matrix of genewise read counts as input. 
 
 ```{r setup, echo=FALSE, results="hide", warning=FALSE}
+knitr::opts_chunk$set(prompt = TRUE, comment = NA)
 suppressPackageStartupMessages({library(RnaSeqGeneEdgeRQL)})
 ```
 
