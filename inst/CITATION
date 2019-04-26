@@ -6,5 +6,6 @@ citEntry(
   volume = "5",
   pages = "1438",
   year = "2016",
+  url = "http://f1000research.com/articles/5-1438",
   textVersion = "Chen Y, Lun ATL, and Smyth, GK (2016). From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline. F1000Research 5, 1438."
 )

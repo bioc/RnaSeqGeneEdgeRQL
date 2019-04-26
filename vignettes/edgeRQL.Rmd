@@ -633,19 +633,19 @@ The set of genes can be chosen to be representative of any pathway or phenotype 
 In the *edgeR* context, `fry` is generally recommended over `roast`.
 `fry` gives an accurate analytic approximation to the results that `roast` would give, with default settings, if an extremely large number of rotations was used.
 
-Here, suppose we are interested in three GO terms related to cytokinesis.
+Here, suppose we are interested in two GO terms related to cytokinesis.
 Each GO term is used to define a set of genes annotated with that term.
 The names of these terms are shown below:
 
 ```{r select, message=FALSE}
 library(GO.db)
-cyt.go <- c("GO:0032465", "GO:0000281", "GO:0000920")
+cyt.go <- c("GO:0032465", "GO:0000281")
 term <- select(GO.db, keys=cyt.go, columns="TERM")
 term
 ```
 
 The first step is to extract the genes associated with each GO term from the GO database.
-This produces a list of three components, one for each GO term.
+This produces a list of two components, one for each GO term.
 Each component is a vector of Entrez Gene IDs for that GO term:
 
 ```{r GO2ALLEGS}
