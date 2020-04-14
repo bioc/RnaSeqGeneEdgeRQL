@@ -7,7 +7,7 @@ author:
     affiliation: Cancer Research UK Cambridge Institute, University of Cambridge, Li Ka Shing Centre, Robinson Way, CB20RE, Cambridge, United Kingdom
   - name: Gordon K. Smyth
     affiliation: The Walter and Eliza Hall Institute of Medical Research, 1G Royal Parade, Parkville, VIC 3052, Melbourne, Australia; School of Mathematics and Statistics, The University of Melbourne, Parkville, VIC 3010, Melbourne, Australia
-date: 28 Oct 2018
+date: 14 April 2020
 vignette: >
   %\VignetteIndexEntry{From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -240,7 +240,7 @@ Whatever the filtering rule, it should be independent of the information in the 
 It should not make any reference to which RNA libraries belong to which group, because doing so would bias the subsequent differential expression analysis.
 
 
-Normalization for composition bias {#normalization-for-composition-bias .unnumbered}
+Library size normalization {#normalization-for-composition-bias .unnumbered}
 ----------------------------------
 
 Normalization by trimmed mean of M values (TMM) [@robinson2010tmm] is performed by using the `calcNormFactors` function, which returns the `DGEList` argument with only the `norm.factors` changed.
@@ -259,8 +259,8 @@ Here we see that the luminal-lactating samples have low normalization factors.
 This is a sign that these samples contain a number of very highly upregulated genes.
 
 **Note**.
-In general, we find TMM normalization to be satisfactory for almost all well-designed mRNA gene expression experiments.
-Single-cell RNA-seq is an exception, for which specialized normalization methods are needed [@lun2016pooling].
+In general, we find TMM normalization to be satisfactory for almost all well-designed bulk mRNA gene expression experiments, although TMMwsp normalization may be preferable if the proportion of zero counts is unusually large.
+Specialized normalization methods are generally need for single-cell RNA-seq [@lun2016pooling] and we do not recommend TMM in that context.
 Another, less common, type of study requiring special treatment is that with global differential expression, with more than half of the genome differentially expressed between experimental conditions in the same direction [@wu2013mirna].
 Global differential expression should generally be avoided in well designed experiments.
 When it can't be avoided, then some normalization reference such as spike-ins needs to be built into the experiment for reliable normalization to be done [@risso2014ruvseq].
@@ -409,8 +409,7 @@ summary(is.de)
 The magnitude of the differential expression changes can be visualized with a fitted model MD plot:
 
 ```{r plotMDfit, fig.width=7, fig.height=7, fig.cap="MD plot showing the log-fold change and average abundance of each gene. Significantly up and down DE genes are highlighted in red and blue, respectively."}
-plotMD(res, status=is.de, values=c(1,-1), col=c("red","blue"),
-       legend="topright")
+plotMD(res, status=is.de)
 ```
 The logFC for each gene is plotted against the average abundance in log2-CPM, i.e., `logCPM` in the table above.
 Genes that are significantly DE are highlighted.
@@ -449,8 +448,7 @@ It provides greater specificity for identifying the most important genes with la
 The test results can be visualized in an MD plot:
 
 ```{r plotMDtreat, fig.width=7, fig.height=7, fig.cap="MD plot showing the log-fold change and average abundance of each gene. Genes with fold-changes significantly greater than 1.5 are highlighted."}
-plotMD(tr, status=is.de, values=c(1,-1), col=c("red","blue"),
-       legend="topright")
+plotMD(tr, status=is.de)
 ```
 
 The \code{glmTreat} method evaluates variability as well as the magnitude of change of expression values and therefore is not equivalent to a simple fold change cutoff.
@@ -511,7 +509,7 @@ Analysis of deviance {#analysis-of-deviance .unnumbered}
 
 The differential expression analysis comparing two groups can be easily extended to comparisons between three or more groups.
 This is done by creating a matrix of independent contrasts.
-In this manner, users can perform a one-way analysis of deviance (ANODEV) for each gene [@mccullagh1989glms].
+In this manner, users can perform a one-way analysis of deviance (ANODEV) for each gene [@dunn2018glms].
 
 Suppose we want to compare the three groups in the luminal population, i.e., virgin, pregnant and lactating.
 An appropriate contrast matrix can be created as shown below, to make pairwise comparisons between all three groups:
