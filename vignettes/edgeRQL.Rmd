@@ -7,7 +7,7 @@ author:
     affiliation: Cancer Research UK Cambridge Institute, University of Cambridge, Li Ka Shing Centre, Robinson Way, CB20RE, Cambridge, United Kingdom
   - name: Gordon K. Smyth
     affiliation: The Walter and Eliza Hall Institute of Medical Research, 1G Royal Parade, Parkville, VIC 3052, Melbourne, Australia; School of Mathematics and Statistics, The University of Melbourne, Parkville, VIC 3010, Melbourne, Australia
-date: 14 April 2020
+date: 13 June 2020
 vignette: >
   %\VignetteIndexEntry{From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -688,17 +688,17 @@ Camera gene set enrichment analysis {#camera-gene-set-enrichment-analysis .unnum
 -----------------------------------
 
 Finally we demonstrate a gene set enrichment style analysis using the Molecular Signatures Database (MSigDB) [@subramanian2005gsea].
-We will use the C2 collection of the MSigDB, which is a collection of nearly 5000 curated gene sets, each representing the molecular signature of a particular biological process or phenotype.
+We will use the C2 collection of the MSigDB, which is a collection of over 5000 curated gene sets, each representing the molecular signature of a particular biological process or phenotype.
 The MSigDB itself is purely human, but the Walter and Eliza Hall Institute (WEHI) maintains a mouse version of the database.
 We load the mouse version of the C2 collection from the WEHI website:
 ```{r camera}
-load(url("http://bioinf.wehi.edu.au/software/MSigDB/mouse_c2_v5p1.rdata"))
+Mm.c2 <- readRDS(url("http://bioinf.wehi.edu.au/MSigDB/v7.1/Mm.c2.all.v7.1.entrez.rds"))
 ```
-This will load `Mm.c2`, which is a list of gene sets, each a vector of Entrez Ids.
-This can be converted to a list of index numbers:
+This will read into `Mm.c2` a list of gene sets, each a vector of NCBI GeneIDs.
+The GeneIDs can be converted to row numbers by:
 
 ```{r id2indices.Mm.c2}
-idx <- ids2indices(Mm.c2,id=rownames(y))
+idx <- ids2indices(Mm.c2,id=row.names(y))
 ```
 
 First we compare virgin stem cells to virgin luminal cells:
