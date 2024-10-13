@@ -398,11 +398,11 @@ In order to control the false discovery rate (FDR), multiple testing correction 
 The top DE gene *Csn1s2b* has a large positive logFC, showing that it is far more highly expressed in the basal cells of lactating than pregnant mice.
 This gene is indeed known to be a major source of protein in milk.
 
-The total number of DE genes identified at an FDR of 5% can be shown with `decideTestsDGE`.
+The total number of DE genes identified at an FDR of 5% can be shown with `decideTests`.
 There are in fact more than 5000 DE genes in this comparison:
 
 ```{r decideTests}
-is.de <- decideTestsDGE(res)
+is.de <- decideTests(res)
 summary(is.de)
 ```
 
@@ -439,7 +439,7 @@ About 1100 genes are detected as DE with a FC significantly above 1.5 at an FDR 
 
 
 ```{r treatdecideTests}
-is.de <- decideTestsDGE(tr)
+is.de <- decideTests(tr)
 summary(is.de)
 ```
 The p-values from `glmTreat` are larger than those from `glmQLFTest`, and the number of significantly DE genes is fewer, because it is testing an interval null hypothesis and requires stronger evidence for differential expression than does a conventional test.
