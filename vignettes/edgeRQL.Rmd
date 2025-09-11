@@ -7,7 +7,7 @@ author:
     affiliation: Cancer Research UK Cambridge Institute, University of Cambridge, Li Ka Shing Centre, Robinson Way, CB20RE, Cambridge, United Kingdom
   - name: Gordon K. Smyth
     affiliation: The Walter and Eliza Hall Institute of Medical Research, 1G Royal Parade, Parkville, VIC 3052, Melbourne, Australia; School of Mathematics and Statistics, The University of Melbourne, Parkville, VIC 3010, Melbourne, Australia
-date: 13 June 2020
+date: 11 Sep 2025
 vignette: >
   %\VignetteIndexEntry{From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,9 +38,11 @@ Changes in expression can then be associated with differences in biology, provid
 
 This article provides a detailed workflow for analyzing an RNA-seq study all the way from the raw reads through to differential expression and pathway analysis using Bioconductor packages [@huber2015orchestrating]. 
 The article gives a complete analysis of RNA-seq data that were collected to study the effects of pregnancy and lactation on the luminal cell lineage in the mouse mammary gland [@fu2015egfmcl1]. 
-The pipeline uses the *Rsubread* package [@liao2013subread] for mapping reads and assigning them to genes and the *edgeR* package [@robinson2010edger] for statistical analyses.
+The pipeline uses the *Rsubread* package [@liao2013subread] for mapping reads and assigning them to genes and the *edgeR* package [@chen2025edger4] for statistical analyses.
 
 A journal article version of this workflow, including referee reports and responses, is available at [F1000Research](http://f1000research.com/articles/5-1438) [@chen2016quasiworkflow].
+Note that in *edgeR* version 4 (first released in Bioconductor, October 2024), low-count modelling has been further improved by replacing the saddle-point approximation with bias-corrected deviances [@chen2025edger4].
+The workflow results shown here were generated with *edgeR* v4 and may therefore vary slightly from those reported in the journal article.
 
 RNA-seq analysis involves a number of steps, including read alignment, read summarization, differential expression and pathway analysis. 
 Here we use the Subread aligner [@liao2013subread] for mapping and featureCounts [@liao2014featurecounts] for assigning reads to genes.
@@ -53,12 +55,14 @@ This method provides stricter error rate control than other negative binomial ba
 The edgeR-quasi pipeline is based on similar statistical methodology to that of the *QuasiSeq* package [@lund2012quasiseq], which has performed well in third-party comparisons [@burden2014error]. 
 Compared to *QuasiSeq*, the *edgeR* functions offer speed improvements and some additional statistical refinements [@lun2016delicious].
 The RNA-seq pipelines of the *limma* package also offer excellent error rate control [@law2014voom; @ritchie2015limma].
-While the *limma* pipelines are recommended for large-scale datasets, because of their speed and flexibility, the edgeR-quasi pipeline gives better performance in low-count situations [@lun2014denovo; @lun2015diffhic].
+While the *limma* pipelines are recommended for large-scale datasets, because of their speed and flexibility, the edgeR-quasi pipeline gives better performance in low-count situations [@lun2014denovo; @lun2015diffhic; @chen2025edger4].
 For the data analyzed here, the edgeR-quasi, limma-voom and limma-trend pipelines are all equally suitable and give similar results.
  
 The analysis approach illustrated in this article can be applied to any RNA-seq study that includes some replication, but it is especially appropriate for designed experiments with multiple treatment factors and with small numbers of biological replicates.
 The approach assumes that RNA samples have been extracted from cells of interest under two or more treatment conditions, that RNA-seq profiling has been applied to each RNA sample and that there are independent biological replicates for at least one of the treatment conditions.
 The *Rsubread* part of the workflow takes FASTQ files of raw sequence reads as input, while the *edgeR* part of the pipeline takes a matrix of genewise read counts as input. 
+
+
 
 ```{r setup, echo=FALSE, results="hide", warning=FALSE}
 knitr::opts_chunk$set(prompt = TRUE, comment = NA)
